@@ -1,0 +1,61 @@
+#Implement a Node based Queue
+
+# ListNode class (already available)
+class ListNode:
+    def __init__(self, data=None, next=None, prev=None):
+        self.data = data
+        self.next = next
+        self.prev = prev
+
+    def __repr__(self):
+        return f'<ListNode: {self.data}>'
+
+    def __str__(self):
+        return str(self.data)
+
+
+# Node-based Queue
+class Queue:
+    def __init__(self):
+        self._head = None  # new elements are added here
+        self._tail = None  # old elements are removed here
+        self._size = 0
+
+    def enqueue(self, value):
+        """
+        Add a new element at the head (newest on the left)
+        """
+        new_node = ListNode(value)
+        new_node.next = self._head
+        if self._head:
+            self._head.prev = new_node
+        self._head = new_node
+        if self._tail is None:  # first element
+            self._tail = new_node
+        self._size += 1
+
+    def dequeue(self):
+        """
+        Remove an element from the tail (oldest on the right)
+        """
+        if self._tail is None:
+            return None
+        node_to_remove = self._tail
+        self._tail = node_to_remove.prev
+        if self._tail:
+            self._tail.next = None
+        else:  # queue is now empty
+            self._head = None
+        self._size -= 1
+        value = node_to_remove.data
+        del node_to_remove
+        return value
+
+    def __repr__(self):
+        values = []
+        current = self._head
+        while current:
+            values.append(str(current.data))
+            current = current.next
+        plural = '' if self._size == 1 else 's'
+        return f"<Queue ({self._size} element{plural}): [{', '.join(values)}]>"

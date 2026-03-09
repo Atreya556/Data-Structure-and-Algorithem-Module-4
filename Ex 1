@@ -1,0 +1,44 @@
+#Implement push and pop methods for a Stack structure
+class Node:
+    def __init__(self, data=None, next=None):
+        self.data = data
+        self.next = next
+
+    def __repr__(self):
+        return f'<Node: {self.data}>'
+
+
+class Stack:
+    def __init__(self):
+        self._top = None
+        self._size = 0
+
+    def __len__(self):
+        return self._size
+
+    def peek(self):
+        return self._top.data if self._top else None
+
+    def push(self, data):
+        new_node = Node(data, next=self._top)
+        self._top = new_node
+        self._size += 1
+
+    def pop(self):
+        if not self._top:
+            return None
+        node_to_remove = self._top
+        self._top = self._top.next
+        self._size -= 1
+        value = node_to_remove.data
+        del node_to_remove
+        return value
+
+    def __repr__(self):
+        values = []
+        current = self._top
+        while current:
+            values.append(str(current.data))  # convert to string for clean printing
+            current = current.next
+        plural = '' if self._size == 1 else 's'
+        return f"<Stack ({self._size} element{plural}): [{', '.join(values)}]>"

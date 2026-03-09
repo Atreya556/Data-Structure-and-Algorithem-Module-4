@@ -1,0 +1,24 @@
+#Write function to check the brackets balance
+
+def check_balance(text):
+    stack = Stack()
+    pairs = {'(': ')', '{': '}', '[': ']'}
+    count = 0
+
+    for pos, char in enumerate(text):
+        if char in pairs:  # opening bracket
+            stack.push((char, pos))
+        elif char in pairs.values():  # closing bracket
+            if len(stack) == 0:
+                return f"Match error at position {pos}"
+            last_open, last_pos = stack.pop()
+            if pairs[last_open] != char:
+                return f"Match error at position {pos}"
+            count += 1
+
+    # If there are unmatched opening brackets left
+    if len(stack) > 0:
+        _, last_pos = stack.pop()
+        return f"Match error at position {last_pos}"
+
+    return f"Ok - {count}"

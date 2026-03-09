@@ -1,0 +1,24 @@
+#Implement a function to make pairs of even-odd numbers
+
+def get_pairs(numbers):
+    even_queue = Queue()  # Queue for even numbers
+    odd_queue = Queue()   # Queue for odd numbers
+    pairs = []
+
+    for num in numbers:
+        if num % 2 == 0:  # even number
+            if len(odd_queue) > 0:
+                # Pair with the first odd number in the queue
+                odd_num = odd_queue.dequeue()
+                pairs.append((num, odd_num))
+            else:
+                even_queue.enqueue(num)
+        else:  # odd number
+            if len(even_queue) > 0:
+                # Pair with the first even number in the queue
+                even_num = even_queue.dequeue()
+                pairs.append((even_num, num))
+            else:
+                odd_queue.enqueue(num)
+
+    return pairs
